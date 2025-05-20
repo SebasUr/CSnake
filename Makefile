@@ -1,7 +1,9 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g -lncurses
 
-SRCS = main.c
+SRCS = main.c \
+	   board.c \
+	   snake_game.c \
 
 OBJS = $(SRCS:.c=.o)
 
