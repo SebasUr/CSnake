@@ -5,7 +5,8 @@ LDFLAGS = -lncurses
 SRCS = main.c \
        board.c \
        snake.c \
-       snake_game.c
+       snake_game.c \
+	   score_board.c
 
 OBJS = $(SRCS:.c=.o)
 
