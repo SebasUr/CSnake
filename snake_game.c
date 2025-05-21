@@ -46,6 +46,34 @@ void snake_game_process_input(snake_game_t *game) {
         case 'q':
             game->game_over = true;
             break;
+        case KEY_UP:
+            if (game->snake.cur_direction != down) {
+                game->snake.cur_direction = up;
+            }
+            break;
+        case KEY_DOWN:
+            if (game->snake.cur_direction != up) {
+                game->snake.cur_direction = down;
+            }
+            break;
+        case KEY_LEFT:
+            if (game->snake.cur_direction != right) {
+                game->snake.cur_direction = left;
+            }
+            break;
+        case KEY_RIGHT:
+            if (game->snake.cur_direction != left) {
+                game->snake.cur_direction = right;
+            }
+            break;
+        case 'p':
+            while (true) {
+                chtype pause_input = board_get_input(game->board);
+                if (pause_input == 'p') {
+                    break; 
+                }
+            }
+            break;
         default:
             break;
     }
@@ -60,7 +88,14 @@ void snake_game_update_state(snake_game_t *game) {
         board_place_char(game->board, x, y, 'A');
     }
     SnakePiece next = Snake_nextHead(&game->snake);;
-    if(next.x != game->apple_x && next.y != game->apple_y){
+    if(next.x == game->apple_x && next.y == game->apple_y) {
+        // Reset para generar nueva manzana
+        game->apple_x = -1; 
+        game->apple_y = -1;
+    } else if(board_get_chart_at(game->board, next.x, next.y) != ' ') {
+        game->game_over = true;
+        return;
+    } else {
         int emptyRow = Snake_tail(&game->snake).y;
         int emptyCol = Snake_tail(&game->snake).x;
         board_place_char(game->board, emptyCol, emptyRow, ' ');

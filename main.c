@@ -6,6 +6,7 @@
 
 int main() {
     initscr();
+    keypad(stdscr, TRUE);
     refresh();
 
     noecho();
@@ -23,11 +24,12 @@ int main() {
         snake_game_update_state(game);
         snake_game_redraw(game);
     }
+    
 
     snake_game_destroy(game);
 
     getch();
     endwin();
-
+    printf("Game Over!\n");
     return 0;
 }

@@ -17,14 +17,18 @@ void board_place_char(board_t *board, int x, int y, chtype ch) {
     mvwaddch(board->win, y, x, ch);
 }
 
+chtype board_get_chart_at(board_t *board, int x, int y) {
+    return mvwinch(board->win, y, x);
+}
+
 chtype board_get_input(board_t *board) {
     return wgetch(board->win);
 }
 
 void board_get_empty_space(board_t *board, int *x, int *y) {
     while (mvwinch(board->win, *y, *x) != ' ') {
-        *x = rand() % (board->rows);
-        *y = rand() % (board->cols);
+        *x = rand() % (board->cols);
+        *y = rand() % (board->rows);
     }
 }
 
@@ -37,12 +41,13 @@ board_t *board_initialize(int rows, int cols) {
     int xMax, yMax;
     getmaxyx(stdscr, yMax, xMax);
     board->win = newwin(rows, cols, (yMax / 2) - (rows/2), (xMax / 2) - (cols/2));
-    wtimeout(board->win, 1000);
+    wtimeout(board->win, 500);
 
     board->cols = cols;
     board->rows = rows;
     board_clear(board);
     board_refresh(board);
+    keypad(board->win, TRUE);
     return board;
 }
 
