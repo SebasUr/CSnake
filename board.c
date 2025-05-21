@@ -40,7 +40,9 @@ board_t *board_initialize(int rows, int cols) {
 
     int xMax, yMax;
     getmaxyx(stdscr, yMax, xMax);
-    board->win = newwin(rows, cols, (yMax / 2) - (rows/2), (xMax / 2) - (cols/2));
+    board->startRow = (yMax / 2) - (rows/2);
+    board->startCol = (xMax / 2) - (cols/2);
+    board->win = newwin(rows, cols, board->startRow, board->startCol);
     wtimeout(board->win, 500);
 
     board->cols = cols;

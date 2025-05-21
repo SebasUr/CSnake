@@ -13,10 +13,6 @@ int main() {
     curs_set(0);
 
     snake_game_t *game = snake_game_initialize(BOARD_ROWS, BOARD_COLS);
-    if (game == NULL) {
-        endwin();
-        return 1; 
-    }
 
     // Main game loop
     while (!game->game_over) {

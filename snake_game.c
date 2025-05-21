@@ -12,14 +12,26 @@ snake_game_t *snake_game_initialize(int rows, int cols) {
         return NULL;
     }
 
+    int sb_row = game->board->startRow + rows;
+    int sb_col = game->board->startCol;
+    
+    game->score_board = score_board_create(cols, sb_row, sb_col);
+    if (game->score_board == NULL) {
+        free(game);
+        return NULL;
+    }
+
+    score_board_initialize(game->score_board, 0);
+
+    // Lógica de la serpiente...
     game->game_over = false;
     game->apple_x = -1;
     game->apple_y = -1;
     srand(time(NULL));
     game->snake.cur_direction = down;
+
     SnakePiece next;
     SnakePiece_init_with_params(&next, 1, 1);
-
     board_add(game->board, next);
     Snake_addPiece(&game->snake, next);
 
@@ -92,6 +104,8 @@ void snake_game_update_state(snake_game_t *game) {
         // Reset para generar nueva manzana
         game->apple_x = -1; 
         game->apple_y = -1;
+        game->score += 100;
+        score_board_update(game->score_board, game->score);
     } else if(board_get_chart_at(game->board, next.x, next.y) != ' ') {
         game->game_over = true;
         return;
@@ -107,6 +121,7 @@ void snake_game_update_state(snake_game_t *game) {
 
 void snake_game_redraw(snake_game_t *game) {
     board_refresh(game->board);
+    score_board_refresh(game->score_board);
 }
 
 void snake_game_destroy(snake_game_t *game) {

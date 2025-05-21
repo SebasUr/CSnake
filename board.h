@@ -8,6 +8,8 @@ typedef struct {
     WINDOW *win;
     int rows;
     int cols;
+    int startRow;
+    int startCol;
 } board_t;
 
 void board_add_border(board_t *board);
