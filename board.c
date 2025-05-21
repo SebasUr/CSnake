@@ -37,10 +37,15 @@ board_t *board_initialize(int rows, int cols) {
     int xMax, yMax;
     getmaxyx(stdscr, yMax, xMax);
     board->win = newwin(rows, cols, (yMax / 2) - (rows/2), (xMax / 2) - (cols/2));
+    wtimeout(board->win, 1000);
 
     board->cols = cols;
     board->rows = rows;
     board_clear(board);
     board_refresh(board);
     return board;
+}
+
+void board_add(board_t *board, SnakePiece piece) {
+    board_place_char(board, piece.x, piece.y, piece.icon);
 }

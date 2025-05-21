@@ -2,6 +2,7 @@
 
 #include <ncurses.h>
 #include <stdlib.h>
+#include "snake.h"
 
 typedef struct {
     WINDOW *win;
@@ -16,3 +17,4 @@ void board_place_char(board_t *board, int x, int y, chtype ch);
 void board_get_empty_space(board_t *board, int *x, int *y);
 chtype board_get_input(board_t *board);
 board_t *board_initialize(int rows, int cols);
+void board_add(board_t *board, SnakePiece piece);

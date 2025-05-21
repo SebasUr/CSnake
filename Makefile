@@ -1,25 +1,25 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g -lncurses
+CFLAGS = -Wall -Wextra -Werror -g
+LDFLAGS = -lncurses
 
 SRCS = main.c \
-	   board.c \
-	   snake_game.c \
+       board.c \
+       snake.c \
+       snake_game.c
 
 OBJS = $(SRCS:.c=.o)
 
-# Ejecutable
-TARGET = main
+TARGET = snake_game
 
-# Regla principal
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(TARGET)
+	$(CC) $(OBJS) $(LDFLAGS) -o $(TARGET)
 
-# Regla para compilar archivos .c a .o
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Limpieza
 clean:
 	rm -f $(OBJS) $(TARGET)
+
+.PHONY: all clean

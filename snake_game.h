@@ -2,12 +2,14 @@
 
 #include <time.h>
 #include "board.h"
+#include "snake.h"
 
 typedef struct {
     board_t *board;
     bool game_over;
     int apple_x;
     int apple_y;
+    Snake snake;
 } snake_game_t;
 
 snake_game_t *snake_game_initialize(int rows, int cols);
