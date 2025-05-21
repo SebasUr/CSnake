@@ -29,8 +29,13 @@ void Snake_addPiece(Snake* snake, SnakePiece piece) {
         snake->pieces = new_pieces;
         snake->capacity = new_capacity;
     }
-    
-    snake->pieces[snake->length++] = piece;
+
+    for (int i = snake->length; i > 0; --i) {
+        snake->pieces[i] = snake->pieces[i - 1];
+    }
+
+    snake->pieces[0] = piece;
+    snake->length++;
 }
 
 void Snake_removePiece(Snake* snake) {

@@ -9,7 +9,7 @@ SRCS = main.c \
 
 OBJS = $(SRCS:.c=.o)
 
-TARGET = snake_game
+TARGET = main
 
 all: $(TARGET)
 
