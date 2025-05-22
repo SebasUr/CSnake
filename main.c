@@ -6,6 +6,11 @@
 
 int main() {
     initscr();
+
+    // Verificación de colores en la terminal.
+    if (has_colors()) {
+        start_color();
+    }
     keypad(stdscr, TRUE);
     refresh();
 

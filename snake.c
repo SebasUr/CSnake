@@ -4,13 +4,13 @@
 void SnakePiece_init(SnakePiece* piece) {
     piece->x = 0;
     piece->y = 0;
-    piece->icon = '#';
+    piece->icon = 'O';
 }
 
 void SnakePiece_init_with_params(SnakePiece* piece, int y, int x) {
     piece->x = x;
     piece->y = y;
-    piece->icon = '#';
+    piece->icon = 'O';
 }
 
 void Snake_init(Snake* snake) {

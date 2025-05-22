@@ -6,6 +6,13 @@ snake_game_t *snake_game_initialize(int rows, int cols) {
         return NULL;
     }
 
+    if (has_colors()) {
+        start_color();
+        init_pair(1, COLOR_YELLOW, COLOR_BLACK); // Cabeza
+        init_pair(2, COLOR_GREEN, COLOR_BLACK);  // Cuerpo
+        init_pair(3, COLOR_RED, COLOR_BLACK);    // Manzana
+    }
+
     game->board = board_initialize(rows, cols);
     if (game->board == NULL) {
         free(game);
@@ -23,7 +30,6 @@ snake_game_t *snake_game_initialize(int rows, int cols) {
 
     score_board_initialize(game->score_board, 0);
 
-    // Lógica de la serpiente...
     game->game_over = false;
     game->apple_x = -1;
     game->apple_y = -1;
@@ -97,9 +103,26 @@ void snake_game_update_state(snake_game_t *game) {
         board_get_empty_space(game->board, &x, &y);
         game->apple_x = x;
         game->apple_y = y;
-        board_place_char(game->board, x, y, 'A');
+        // Manzana en rojo
+        board_place_char(game->board, x, y, 'X' | COLOR_PAIR(3));
     }
-    SnakePiece next = Snake_nextHead(&game->snake);;
+    SnakePiece next = Snake_nextHead(&game->snake);
+    
+    switch (game->snake.cur_direction) {
+        case up:
+            next.icon = '^';
+            break;
+        case down:
+            next.icon = 'v';
+            break;
+        case left:
+            next.icon = '<';
+            break;
+        case right:
+            next.icon = '>';
+            break;
+    }
+    
     if(next.x == game->apple_x && next.y == game->apple_y) {
         // Reset para generar nueva manzana
         game->apple_x = -1; 
@@ -115,8 +138,15 @@ void snake_game_update_state(snake_game_t *game) {
         board_place_char(game->board, emptyCol, emptyRow, ' ');
         Snake_removePiece(&game->snake);
     }
-    board_add(game->board, next);
+    
     Snake_addPiece(&game->snake, next);
+    
+    for (int i = 0; i < game->snake.length; i++) {
+        char icon = (i == 0) ? game->snake.pieces[i].icon : 'O';
+        // Cabeza en amarillo, cuerpo en verde
+        int color_pair = (i == 0) ? COLOR_PAIR(1) : COLOR_PAIR(2);
+        board_place_char(game->board, game->snake.pieces[i].x, game->snake.pieces[i].y, icon | color_pair);
+    }
 }
 
 void snake_game_redraw(snake_game_t *game) {
