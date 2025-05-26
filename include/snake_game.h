@@ -20,4 +20,5 @@ void snake_game_update_state(snake_game_t *game);
 void snake_game_process_input(snake_game_t *game);
 void snake_game_redraw(snake_game_t *game);
 void snake_game_destroy(snake_game_t *game);
+void Snake_reset(Snake *snake);
 int get_score();

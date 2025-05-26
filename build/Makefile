@@ -10,7 +10,8 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/board.c \
 	   $(SRC_DIR)/snake.c \
 	   $(SRC_DIR)/snake_game.c \
-	   $(SRC_DIR)/score_board.c
+	   $(SRC_DIR)/score_board.c \
+	   $(SRC_DIR)/menu.c
 
 OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 

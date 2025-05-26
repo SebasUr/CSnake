@@ -2,6 +2,7 @@
 
 snake_game_t *snake_game_initialize(int rows, int cols) {
     snake_game_t *game = malloc(sizeof(snake_game_t));
+    Snake_reset(&game->snake);
     if (game == NULL) {
         return NULL;
     }
@@ -29,6 +30,7 @@ snake_game_t *snake_game_initialize(int rows, int cols) {
     }
 
     score_board_initialize(game->score_board, 0);
+    game->score = 0;
 
     game->game_over = false;
     game->apple_x = -1;
@@ -162,4 +164,9 @@ void snake_game_destroy(snake_game_t *game) {
         }
         free(game);
     }
+}
+
+void Snake_reset(Snake *snake) {
+    snake->length = 0;
+    snake->cur_direction = right;
 }
