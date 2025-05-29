@@ -9,20 +9,20 @@
 #define MAX_LENGTH 10
 
 typedef struct {
-    int y, x;
-    int dx;
-    int length;
-    char body[MAX_LENGTH][2];
+    int y, x;                // Position of the head
+    int dx;                  // Horizontal direction (1 or -1)
+    int length;              // Length of the snake
+    char body[MAX_LENGTH][2]; // Coordinates of each body segment
 } demo_snake_t;
 
 void show_start_menu() {
     clear();
     int rows, cols;
-    getmaxyx(stdscr, rows, cols);
+    getmaxyx(stdscr, rows, cols);  // Gets the current terminal size
 
-    // Inicializar colores
+    // Initialize colors (green on black for the title)
     start_color();
-    init_pair(1, COLOR_GREEN, COLOR_BLACK); // Solo para la palabra "Snake"
+    init_pair(1, COLOR_GREEN, COLOR_BLACK);
 
     demo_snake_t snakes[MAX_DEMO_SNAKES];
 
@@ -42,9 +42,11 @@ void show_start_menu() {
     int title_y = 3;
     int title_x = (cols - strlen(title[0])) / 2;
 
-    srand(time(NULL));
+    srand(time(NULL));  // Seed for random values
+
+    // Initialize demo snakes with random positions, direction, and length
     for (int i = 0; i < MAX_DEMO_SNAKES; i++) {
-        snakes[i].length = 3 + rand() % (MAX_LENGTH - 3);  // Longitudes entre 3 y 10
+        snakes[i].length = 3 + rand() % (MAX_LENGTH - 3);
         snakes[i].y = rand() % rows;
         snakes[i].x = rand() % cols;
         snakes[i].dx = (rand() % 2 == 0) ? 1 : -1;
@@ -54,38 +56,44 @@ void show_start_menu() {
         }
     }
 
-    timeout(100);
+    timeout(100);  // Waits 100 ms between each iteration (for animation)
+
     int ch;
-    while ((ch = getch()) != '\n') {
+    while ((ch = getch()) != '\n') {  // Waits until user presses ENTER
         if (ch == 'q' || ch == 'Q') {
             endwin();
-            exit(0);
+            exit(0);  // Exits program if 'q' is pressed
         }
 
         clear();
 
-        // Mostrar título completo en color verde
+        // Show title in green
         attron(COLOR_PAIR(1));
         for (int i = 0; i < title_lines; i++) {
             mvprintw(title_y + i, title_x, "%s", title[i]);
         }
         attroff(COLOR_PAIR(1));
 
-        // Mostrar instrucciones
+        // Show instructions text
         mvprintw(text_y, text_x_start, "Press ENTER to Start");
         mvprintw(rows - 1, 2, "Press 'q' to quit");
 
-        // Dibujar serpientes demo
+        // Animation of snakes moving horizontally
         for (int i = 0; i < MAX_DEMO_SNAKES; i++) {
+            // Erase the last tail segment
             mvaddch(snakes[i].body[snakes[i].length - 1][0],
                     snakes[i].body[snakes[i].length - 1][1], ' ');
 
+            // Shift each segment forward
             for (int j = snakes[i].length - 1; j > 0; j--) {
                 snakes[i].body[j][0] = snakes[i].body[j - 1][0];
                 snakes[i].body[j][1] = snakes[i].body[j - 1][1];
             }
 
+            // Move the head
             snakes[i].x += snakes[i].dx;
+
+            // If the snake leaves the screen, it reappears on the other side
             if (snakes[i].x < 0 || snakes[i].x >= cols) {
                 snakes[i].x = (snakes[i].dx == 1) ? 0 : cols - 1;
                 snakes[i].y = rand() % rows;
@@ -94,6 +102,7 @@ void show_start_menu() {
             snakes[i].body[0][0] = snakes[i].y;
             snakes[i].body[0][1] = snakes[i].x;
 
+            // Draw the snake segments, avoiding overlap with text
             for (int j = 0; j < snakes[i].length; j++) {
                 int y = snakes[i].body[j][0];
                 int x = snakes[i].body[j][1];
@@ -114,8 +123,8 @@ void show_start_menu() {
         refresh();
     }
 
-    // Limpiar pantalla al salir
+    // Final cleanup when exiting the menu
     clear();
     refresh();
-    timeout(-1);
+    timeout(-1);  // Restores infinite wait for input
 }
